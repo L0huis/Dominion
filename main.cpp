@@ -1,13 +1,14 @@
-#include <iostream>
-#include <chrono>
-#include <atomic>
-#include <omp.h>
-
 #include "Spiel.h"
+
+#include <atomic>
+#include <chrono>
+#include <iostream>
+#include <omp.h>
 
 int main()
 {
-	Spiel s = Spiel(10);
+	Spiel s = Spiel(4);
+
 	s.simulieren();
 
 	std::cout << s;

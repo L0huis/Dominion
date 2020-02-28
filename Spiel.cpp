@@ -1,6 +1,7 @@
 #include "Spiel.h"
 
-Spiel::Spiel(size_t _anzahl_spieler, unsigned long long seed) : anzahl_spieler(_anzahl_spieler)
+Spiel::Spiel(size_t _anzahl_spieler, unsigned long long seed)
+	: anzahl_spieler(_anzahl_spieler)
 {
 	kupfer = Stapel<Kupfer>(60 + 7);
 	silber = Stapel<Silber>(40);
@@ -45,16 +46,10 @@ Spiel::Spiel(size_t _anzahl_spieler, unsigned long long seed) : anzahl_spieler(_
 	cost5 = std::discrete_distribution<unsigned int>({ 1, 1, 1, 1, 1 });
 
 	mitspieler.reserve(anzahl_spieler);
-	std::vector<std::shared_ptr<Karte>> start_deck {
-		kupfer.karte_ziehen(),
-		kupfer.karte_ziehen(),
-		kupfer.karte_ziehen(),
-		kupfer.karte_ziehen(),
-		kupfer.karte_ziehen(),
-		kupfer.karte_ziehen(),
-		kupfer.karte_ziehen(),
-		anwesen.karte_ziehen(),
-		anwesen.karte_ziehen(),
+	std::vector<std::shared_ptr<Karte>> start_deck{
+		kupfer.karte_ziehen(), kupfer.karte_ziehen(),  kupfer.karte_ziehen(),
+		kupfer.karte_ziehen(), kupfer.karte_ziehen(),  kupfer.karte_ziehen(),
+		kupfer.karte_ziehen(), anwesen.karte_ziehen(), anwesen.karte_ziehen(),
 		anwesen.karte_ziehen()
 	};
 	for (size_t i = 0; i < anzahl_spieler; i++)
@@ -66,30 +61,54 @@ Spiel::Spiel(size_t _anzahl_spieler, unsigned long long seed) : anzahl_spieler(_
 bool Spiel::ist_spiel_vorbei() const
 {
 	int leere_stapel = 0;
-	if (burggraben.ist_leer()) leere_stapel++;
-	if (kapelle.ist_leer()) leere_stapel++;
-	if (keller.ist_leer()) leere_stapel++;
-	if (dorf.ist_leer()) leere_stapel++;
-	if (holzfaeller.ist_leer()) leere_stapel++;
-	if (kanzler.ist_leer()) leere_stapel++;
-	if (werkstatt.ist_leer()) leere_stapel++;
-	if (buerokrat.ist_leer()) leere_stapel++;
-	if (dieb.ist_leer()) leere_stapel++;
-	if (festmahl.ist_leer()) leere_stapel++;
-	if (geldverleiher.ist_leer()) leere_stapel++;
-	if (miliz.ist_leer()) leere_stapel++;
-	if (schmiede.ist_leer()) leere_stapel++;
-	if (spion.ist_leer()) leere_stapel++;
-	if (thronsaal.ist_leer()) leere_stapel++;
-	if (umbau.ist_leer()) leere_stapel++;
-	if (bibliothek.ist_leer()) leere_stapel++;
-	if (hexe.ist_leer()) leere_stapel++;
-	if (jahrmarkt.ist_leer()) leere_stapel++;
-	if (laboratorium.ist_leer()) leere_stapel++;
-	if (markt.ist_leer()) leere_stapel++;
-	if (mine.ist_leer()) leere_stapel++;
-	if (ratsversammlung.ist_leer()) leere_stapel++;
-	if (abenteurer.ist_leer()) leere_stapel++;
+	if (burggraben.ist_leer())
+		leere_stapel++;
+	if (kapelle.ist_leer())
+		leere_stapel++;
+	if (keller.ist_leer())
+		leere_stapel++;
+	if (dorf.ist_leer())
+		leere_stapel++;
+	if (holzfaeller.ist_leer())
+		leere_stapel++;
+	if (kanzler.ist_leer())
+		leere_stapel++;
+	if (werkstatt.ist_leer())
+		leere_stapel++;
+	if (buerokrat.ist_leer())
+		leere_stapel++;
+	if (dieb.ist_leer())
+		leere_stapel++;
+	if (festmahl.ist_leer())
+		leere_stapel++;
+	if (geldverleiher.ist_leer())
+		leere_stapel++;
+	if (miliz.ist_leer())
+		leere_stapel++;
+	if (schmiede.ist_leer())
+		leere_stapel++;
+	if (spion.ist_leer())
+		leere_stapel++;
+	if (thronsaal.ist_leer())
+		leere_stapel++;
+	if (umbau.ist_leer())
+		leere_stapel++;
+	if (bibliothek.ist_leer())
+		leere_stapel++;
+	if (hexe.ist_leer())
+		leere_stapel++;
+	if (jahrmarkt.ist_leer())
+		leere_stapel++;
+	if (laboratorium.ist_leer())
+		leere_stapel++;
+	if (markt.ist_leer())
+		leere_stapel++;
+	if (mine.ist_leer())
+		leere_stapel++;
+	if (ratsversammlung.ist_leer())
+		leere_stapel++;
+	if (abenteurer.ist_leer())
+		leere_stapel++;
 	return provinz.ist_leer() || leere_stapel >= 3;
 }
 
@@ -97,26 +116,28 @@ void Spiel::simulieren()
 {
 	for (unsigned int zug_nummer = 1; !ist_spiel_vorbei(); zug_nummer++)
 	{
-		for (unsigned int spieler_nummer = 0; spieler_nummer < anzahl_spieler; spieler_nummer++)
+		for (unsigned int spieler_nummer = 0; spieler_nummer < anzahl_spieler;
+			 spieler_nummer++)
 		{
 			Spieler& spieler = mitspieler[spieler_nummer];
 			statistik[spieler_nummer].anzahl_zuege++;
-		#ifdef DEBUG
-			std::cout << "Zug: " << zug_nummer << " Spieler: " << spieler_nummer + 1 << '\n';
-		#endif
+#ifdef DEBUG
+			std::cout << "Zug: " << zug_nummer
+					  << " Spieler: " << spieler_nummer + 1 << '\n';
+#endif
 
 			spieler.fuellen();
 
-		#ifdef DEBUG
-			std::sort(spieler.hand.begin(), spieler.hand.end(), [](std::shared_ptr<Karte> a, std::shared_ptr<Karte> b)
-			{
-				return a->id < b->id;
-			});
+#ifdef DEBUG
+			std::sort(spieler.hand.begin(), spieler.hand.end(),
+					  [](std::shared_ptr<Karte> a, std::shared_ptr<Karte> b) {
+						  return a->id < b->id;
+					  });
 			std::cout << "Hand vor Aktionen: ";
 			for (auto& k : spieler.hand)
 				std::cout << k->to_string() << ", ";
 			std::cout << "\n";
-		#endif
+#endif
 
 			// Aktionsphase
 
@@ -124,36 +145,39 @@ void Spiel::simulieren()
 
 			for (; spieler.aktionen > 0; spieler.aktionen--)
 			{
-				auto start_aktionskarten = std::partition(spieler.hand.begin(), spieler.hand.end(), [](std::shared_ptr<Karte> a)
-				{
-					return a->typ != Karte_Typ::AKTIONSKARTE;
-				});
+				auto start_aktionskarten =
+					std::partition(spieler.hand.begin(), spieler.hand.end(),
+								   [](std::shared_ptr<Karte> a) {
+									   return a->typ != Karte_Typ::AKTIONSKARTE;
+								   });
 
 				// Keine Aktionskarten vorhanden
 				if (start_aktionskarten == spieler.hand.end())
 					break;
 
-				std::sort(start_aktionskarten, spieler.hand.end(), [](std::shared_ptr<Karte> a, std::shared_ptr<Karte> b)
-				{
-					auto ak_a = std::static_pointer_cast<Aktionskarte>(a);
-					auto ak_b = std::static_pointer_cast<Aktionskarte>(b);
+				std::sort(
+					start_aktionskarten, spieler.hand.end(),
+					[](std::shared_ptr<Karte> a, std::shared_ptr<Karte> b) {
+						auto ak_a = std::static_pointer_cast<Aktionskarte>(a);
+						auto ak_b = std::static_pointer_cast<Aktionskarte>(b);
 
-					if (ak_a->aktionen > 0 && ak_b->aktionen > 0)
-						return ak_a->karten < ak_b->karten;
-					else if (ak_a->aktionen > 0 || ak_b->aktionen > 0)
-						return ak_a->aktionen < ak_b->aktionen;
-					else
-						return ak_a->geld < ak_b->geld;
-				});
+						if (ak_a->aktionen > 0 && ak_b->aktionen > 0)
+							return ak_a->karten < ak_b->karten;
+						else if (ak_a->aktionen > 0 || ak_b->aktionen > 0)
+							return ak_a->aktionen < ak_b->aktionen;
+						else
+							return ak_a->geld < ak_b->geld;
+					});
 
-				auto ak = std::static_pointer_cast<Aktionskarte>(spieler.hand.back());
+				auto ak =
+					std::static_pointer_cast<Aktionskarte>(spieler.hand.back());
 				gespielte_karten.push_back(spieler.hand.back());
 				spieler.hand.pop_back();
 				ak->aktion(spieler, mitspieler);
 
-			#ifdef DEBUG
+#ifdef DEBUG
 				std::cout << "Gespielt: " << ak->to_string() << '\n';
-			#endif
+#endif
 			}
 
 			for (auto k : gespielte_karten)
@@ -163,57 +187,60 @@ void Spiel::simulieren()
 
 			// Kaufphase
 
-		#ifdef DEBUG
-			std::sort(spieler.hand.begin(), spieler.hand.end(), [](std::shared_ptr<Karte> a, std::shared_ptr<Karte> b)
-			{
-				return a->id < b->id;
-			});
+#ifdef DEBUG
+			std::sort(spieler.hand.begin(), spieler.hand.end(),
+					  [](std::shared_ptr<Karte> a, std::shared_ptr<Karte> b) {
+						  return a->id < b->id;
+					  });
 			std::cout << "Hand vor Kauf: ";
 			for (auto k : spieler.hand)
 				std::cout << k->to_string() << ", ";
 			std::cout << "\n";
-		#endif
+#endif
 
 			for (auto k : spieler.hand)
 			{
 				if (k->typ == Karte_Typ::GELDKARTE)
 				{
 					statistik[spieler_nummer].geldkarten_auf_hand += 1;
-					spieler.geld += std::static_pointer_cast<Geldkarte>(k)->geld;
+					spieler.geld +=
+						std::static_pointer_cast<Geldkarte>(k)->geld;
 				}
 				if (k->typ == Karte_Typ::PUNKTEKARTE)
 				{
 					statistik[spieler_nummer].punktekarten_auf_hand += 1;
-					statistik[spieler_nummer].punkte_auf_hand += std::static_pointer_cast<Punktekarte>(k)->punkte;
+					statistik[spieler_nummer].punkte_auf_hand +=
+						std::static_pointer_cast<Punktekarte>(k)->punkte;
 				}
 			}
 
 			statistik[spieler_nummer].geld_auf_hand += spieler.geld;
 
-		#ifdef DEBUG
-			std::cout << "Geld: " << spieler.geld << " Kaeufe: " << spieler.kaeufe << '\n';
-		#endif
+#ifdef DEBUG
+			std::cout << "Geld: " << spieler.geld
+					  << " Kaeufe: " << spieler.kaeufe << '\n';
+#endif
 
 			for (; spieler.kaeufe > 0; spieler.kaeufe--)
 			{
 				switch (spieler.geld)
 				{
-				case 0:
-				case 1:
-					goto Kupfer;
-				case 2:
-					goto Geld2;
-				case 3:
-					goto Geld3;
-				case 4:
-					goto Geld4;
-				case 5:
-					goto Geld5;
-				case 6:
-				case 7:
-					goto Gold;
-				default:
-					goto Provinz;
+					case 0:
+					case 1:
+						goto Kupfer;
+					case 2:
+						goto Geld2;
+					case 3:
+						goto Geld3;
+					case 4:
+						goto Geld4;
+					case 5:
+						goto Geld5;
+					case 6:
+					case 7:
+						goto Gold;
+					default:
+						goto Provinz;
 				}
 
 			Geld2:
@@ -224,28 +251,29 @@ void Spiel::simulieren()
 
 				switch (cost2(engine))
 				{
-				case 0:
-					goto Anwesen;
-				case 1:
-					goto Burggraben;
+					case 0:
+						goto Anwesen;
+					case 1:
+						goto Burggraben;
 				}
 
 			Geld3:
-				if (silber.ist_leer() && dorf.ist_leer() && holzfaeller.ist_leer() && kanzler.ist_leer())
+				if (silber.ist_leer() && dorf.ist_leer() &&
+					holzfaeller.ist_leer() && kanzler.ist_leer())
 				{
 					goto Geld2;
 				}
 
 				switch (cost3(engine))
 				{
-				case 0:
-					goto Silber;
-				case 1:
-					goto Dorf;
-				case 2:
-					goto Holzfaeller;
-				case 3:
-					goto Kanzler;
+					case 0:
+						goto Silber;
+					case 1:
+						goto Dorf;
+					case 2:
+						goto Holzfaeller;
+					case 3:
+						goto Kanzler;
 				}
 
 			Geld4:
@@ -256,168 +284,170 @@ void Spiel::simulieren()
 
 				switch (cost4(engine))
 				{
-				case 0:
-					goto Gaerten;
-				case 1:
-					goto Schmiede;
+					case 0:
+						goto Gaerten;
+					case 1:
+						goto Schmiede;
 				}
 
 			Geld5:
-				if (herzogtum.ist_leer() && laboratorium.ist_leer() && markt.ist_leer() && ratsversammlung.ist_leer() && jahrmarkt.ist_leer())
+				if (herzogtum.ist_leer() && laboratorium.ist_leer() &&
+					markt.ist_leer() && ratsversammlung.ist_leer() &&
+					jahrmarkt.ist_leer())
 				{
 					goto Geld4;
 				}
 
 				switch (cost5(engine))
 				{
-				case 0:
-					goto Herzogtum;
-				case 1:
-					goto Laboratorium;
-				case 2:
-					goto Markt;
-				case 3:
-					goto Ratsversammlung;
-				case 4:
-					goto Jahrmarkt;
+					case 0:
+						goto Herzogtum;
+					case 1:
+						goto Laboratorium;
+					case 2:
+						goto Markt;
+					case 3:
+						goto Ratsversammlung;
+					case 4:
+						goto Jahrmarkt;
 				}
 
 			Kupfer:
 				spieler.ablegen(kupfer.karte_ziehen());
-			#ifdef DEBUG
+#ifdef DEBUG
 				std::cout << "Gekauft: Kupfer\n";
-			#endif
+#endif
 				continue;
 
 			Anwesen:
 				if (!spieler.ablegen(anwesen.karte_ziehen()))
 					goto Geld2;
 				spieler.geld -= 2;
-			#ifdef DEBUG
+#ifdef DEBUG
 				std::cout << "Gekauft: Anwesen\n";
-			#endif
+#endif
 				continue;
 			Burggraben:
 				if (!spieler.ablegen(burggraben.karte_ziehen()))
 					goto Geld2;
 				spieler.geld -= 2;
-			#ifdef DEBUG
+#ifdef DEBUG
 				std::cout << "Gekauft: Burggraben\n";
-			#endif
+#endif
 				continue;
 
 			Silber:
 				if (!spieler.ablegen(silber.karte_ziehen()))
 					goto Geld3;
 				spieler.geld -= 3;
-			#ifdef DEBUG
+#ifdef DEBUG
 				std::cout << "Gekauft: Silber\n";
-			#endif
+#endif
 				continue;
 			Dorf:
 				if (!spieler.ablegen(dorf.karte_ziehen()))
 					goto Geld3;
 				spieler.geld -= 3;
-			#ifdef DEBUG
+#ifdef DEBUG
 				std::cout << "Gekauft: Dorf\n";
-			#endif
+#endif
 				continue;
 			Holzfaeller:
 				if (!spieler.ablegen(holzfaeller.karte_ziehen()))
 					goto Geld3;
 				spieler.geld -= 3;
-			#ifdef DEBUG
+#ifdef DEBUG
 				std::cout << "Gekauft: Holzfaeller\n";
-			#endif
+#endif
 				continue;
 			Kanzler:
 				if (!spieler.ablegen(kanzler.karte_ziehen()))
 					goto Geld3;
 				spieler.geld -= 3;
-			#ifdef DEBUG
+#ifdef DEBUG
 				std::cout << "Gekauft: Kanzler\n";
-			#endif
+#endif
 				continue;
 
 			Gaerten:
 				if (!spieler.ablegen(gaerten.karte_ziehen()))
 					goto Geld4;
 				spieler.geld -= 4;
-			#ifdef DEBUG
+#ifdef DEBUG
 				std::cout << "Gekauft: Gaerten\n";
-			#endif
+#endif
 				continue;
 			Schmiede:
 				if (!spieler.ablegen(schmiede.karte_ziehen()))
 					goto Geld4;
 				spieler.geld -= 4;
-			#ifdef DEBUG
+#ifdef DEBUG
 				std::cout << "Gekauft: Schmiede\n";
-			#endif
+#endif
 				continue;
 
 			Herzogtum:
 				if (!spieler.ablegen(herzogtum.karte_ziehen()))
 					goto Geld5;
 				spieler.geld -= 5;
-			#ifdef DEBUG
+#ifdef DEBUG
 				std::cout << "Gekauft: Herzogtum\n";
-			#endif
+#endif
 				continue;
 			Laboratorium:
 				if (!spieler.ablegen(laboratorium.karte_ziehen()))
 					goto Geld5;
 				spieler.geld -= 5;
-			#ifdef DEBUG
+#ifdef DEBUG
 				std::cout << "Gekauft: Laboratorium\n";
-			#endif
+#endif
 				continue;
 			Markt:
 				if (!spieler.ablegen(markt.karte_ziehen()))
 					goto Geld5;
 				spieler.geld -= 5;
-			#ifdef DEBUG
+#ifdef DEBUG
 				std::cout << "Gekauft: Markt\n";
-			#endif
+#endif
 				continue;
 			Ratsversammlung:
 				if (!spieler.ablegen(ratsversammlung.karte_ziehen()))
 					goto Geld5;
 				spieler.geld -= 5;
-			#ifdef DEBUG
+#ifdef DEBUG
 				std::cout << "Gekauft: Ratsversammlung\n";
-			#endif
+#endif
 				continue;
 			Jahrmarkt:
 				if (!spieler.ablegen(jahrmarkt.karte_ziehen()))
 					goto Geld5;
 				spieler.geld -= 5;
-			#ifdef DEBUG
+#ifdef DEBUG
 				std::cout << "Gekauft: Jahrmarkt\n";
-			#endif
+#endif
 				continue;
 
 			Gold:
 				if (!spieler.ablegen(gold.karte_ziehen()))
 					goto Geld5;
 				spieler.geld -= 6;
-			#ifdef DEBUG
+#ifdef DEBUG
 				std::cout << "Gekauft: Gold\n";
-			#endif
+#endif
 				continue;
 
 			Provinz:
 				if (!spieler.ablegen(provinz.karte_ziehen()))
 					goto Gold;
 				spieler.geld -= 8;
-			#ifdef DEBUG
+#ifdef DEBUG
 				std::cout << "Gekauft: Provinz\n";
-			#endif
+#endif
 				continue;
 			}
-		#ifdef DEBUG
+#ifdef DEBUG
 			std::cout << '\n';
-		#endif
+#endif
 
 			spieler.aufraeumen();
 		}
@@ -435,12 +465,14 @@ void Spiel::simulieren()
 		{
 			if (k->typ == Karte_Typ::GELDKARTE)
 			{
-				statistik[i].geld_im_deck += std::static_pointer_cast<Geldkarte>(k)->geld;
+				statistik[i].geld_im_deck +=
+					std::static_pointer_cast<Geldkarte>(k)->geld;
 				statistik[i].geldkarten_im_deck++;
 			}
 			if (k->typ == Karte_Typ::PUNKTEKARTE)
 			{
-				statistik[i].punkte_im_deck += std::static_pointer_cast<Geldkarte>(k)->geld;
+				statistik[i].punkte_im_deck +=
+					std::static_pointer_cast<Geldkarte>(k)->geld;
 				statistik[i].punktekarten_im_deck++;
 			}
 			if (k->typ == Karte_Typ::GAERTEN)
@@ -453,24 +485,29 @@ void Spiel::simulieren()
 	}
 }
 
-
 std::ostream& operator<<(std::ostream& os, const Spiel& spiel)
 {
-	os << "Spieler,Anzahl Zuege,Deck Groesse,Geld im Deck,Geldkarten im Deck,Geld auf Hand,Geldkarten auf Hand,Punkte im Deck,Punktekarten im Deck,Punkte auf Hand,Punktekarten auf Hand,Kupfer,Silber,Gold,Anwesen,Herzogtum,Provinz,Fluch,Gaerten,Burggraben,Kapelle,Keller,Dorf,Holzfaeller,Kanzler,Werkstatt,Buerokrat,Dieb,Festmahl,Geldverleiher,Miliz,Schmiede,Spion,Thronsaal,Umbau,Bibliothek,Hexe,Jahrmarkt,Laboratorium,Markt,Mine,Ratsversammlung,Abenteurer,\n";
+	os << "Spieler,Anzahl Zuege,Deck Groesse,Geld im Deck,Geldkarten im "
+		  "Deck,Geld auf Hand,Geldkarten auf Hand,Punkte im Deck,Punktekarten "
+		  "im Deck,Punkte auf Hand,Punktekarten auf "
+		  "Hand,Kupfer,Silber,Gold,Anwesen,Herzogtum,Provinz,Fluch,Gaerten,"
+		  "Burggraben,Kapelle,Keller,Dorf,Holzfaeller,Kanzler,Werkstatt,"
+		  "Buerokrat,Dieb,Festmahl,Geldverleiher,Miliz,Schmiede,Spion,"
+		  "Thronsaal,Umbau,Bibliothek,Hexe,Jahrmarkt,Laboratorium,Markt,Mine,"
+		  "Ratsversammlung,Abenteurer,\n";
 
 	for (int i = 0; i < spiel.anzahl_spieler; i++)
 	{
-		os	<< i + 1 << ','
-			<< spiel.statistik[i].anzahl_zuege << ','
-			<< spiel.statistik[i].deck_groesse << ','
-			<< spiel.statistik[i].geld_im_deck << ','
-			<< spiel.statistik[i].geldkarten_im_deck << ','
-			<< spiel.statistik[i].geld_auf_hand << ','
-			<< spiel.statistik[i].geldkarten_auf_hand << ','
-			<< spiel.statistik[i].punkte_im_deck << ','
-			<< spiel.statistik[i].punktekarten_im_deck << ','
-			<< spiel.statistik[i].punkte_auf_hand << ','
-			<< spiel.statistik[i].punktekarten_auf_hand << ',';
+		os << i + 1 << ',' << spiel.statistik[i].anzahl_zuege << ','
+		   << spiel.statistik[i].deck_groesse << ','
+		   << spiel.statistik[i].geld_im_deck << ','
+		   << spiel.statistik[i].geldkarten_im_deck << ','
+		   << spiel.statistik[i].geld_auf_hand << ','
+		   << spiel.statistik[i].geldkarten_auf_hand << ','
+		   << spiel.statistik[i].punkte_im_deck << ','
+		   << spiel.statistik[i].punktekarten_im_deck << ','
+		   << spiel.statistik[i].punkte_auf_hand << ','
+		   << spiel.statistik[i].punktekarten_auf_hand << ',';
 
 		for (int k = 0; k < (int)Karten_ID::SIZE; k++)
 			os << spiel.statistik[i].karten_im_deck[k] << ',';

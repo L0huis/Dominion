@@ -1,13 +1,12 @@
 #pragma once
 
-#include <vector>
-#include <algorithm>
-#include <random>
-#include <memory>
-
 #include "Karten.h"
-struct Karte;
 
+#include <algorithm>
+#include <memory>
+#include <random>
+#include <vector>
+struct Karte;
 
 class Spieler
 {

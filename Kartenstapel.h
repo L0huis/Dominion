@@ -16,7 +16,8 @@ public:
 };
 
 template<class T>
-inline Stapel<T>::Stapel(size_t _anzahl) : anzahl(_anzahl)
+inline Stapel<T>::Stapel(size_t _anzahl)
+	: anzahl(_anzahl)
 {
 	karte = std::make_shared<T>();
 }

@@ -10,9 +10,9 @@ namespace z
 	std::discrete_distribution<unsigned int> c4({ 1, 1 });
 	std::discrete_distribution<unsigned int> c5({ 1, 1, 1, 1, 1 });
 
-	double percent() { return p(engine); }
-	unsigned int cost2() { return c2(engine); }
-	unsigned int cost3() { return c3(engine); }
-	unsigned int cost4() { return c4(engine); }
-	unsigned int cost5() { return c5(engine); }
-}
+	double percent();
+	unsigned int cost2();
+	unsigned int cost3();
+	unsigned int cost4();
+	unsigned int cost5();
+} // namespace z

@@ -1,13 +1,13 @@
 #pragma once
 
-#include <iostream>
-#include <vector>
-#include <random>
-#include <memory>
-
-#include "Spieler.h"
 #include "Karten.h"
 #include "Kartenstapel.h"
+#include "Spieler.h"
+
+#include <iostream>
+#include <memory>
+#include <random>
+#include <vector>
 
 #define DEBUG
 
@@ -23,7 +23,7 @@ struct Statistik
 	unsigned int geldkarten_im_deck = 0;
 	int punkte_im_deck = 0;
 	unsigned int punktekarten_im_deck = 0;
-	unsigned int karten_im_deck[(int)Karten_ID::SIZE] { 0 };
+	unsigned int karten_im_deck[(int)Karten_ID::SIZE]{ 0 };
 };
 
 class Spiel
@@ -96,6 +96,5 @@ public:
 	void simulieren();
 
 public:
-	friend std::ostream& operator << (std::ostream& os, const Spiel& spiel);
+	friend std::ostream& operator<<(std::ostream& os, const Spiel& spiel);
 };
-
